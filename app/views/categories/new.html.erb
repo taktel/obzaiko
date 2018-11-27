@@ -1,0 +1,10 @@
+<h1>物品カテゴリ新規作成</h1>
+
+<%= form_for(@category) do |f| %>
+  <%= f.label :name, 'カテゴリ名' %>
+  <%= f.text_field :name %>
+
+  <%= f.submit '作成' %>
+<% end %>
+
+<%= link_to 'カテゴリ一覧に戻る', categories_path, class: 'btn btn-default btn-sm' %>

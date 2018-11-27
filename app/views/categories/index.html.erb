@@ -1,0 +1,8 @@
+<h1>物品カテゴリ一覧</h1>
+
+<ul>
+  <% @categories.each do |category| %>
+    <li><%= link_to category.name, category %></li>
+  <% end %>
+</ul>
+<%= link_to '新規カテゴリの作成', new_category_path, class: 'btn btn-default btn-sm' %>

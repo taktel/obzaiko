@@ -1,0 +1,7 @@
+<h1>id: <%= @category.id %> の物品カテゴリ詳細</h1>
+
+<p>カテゴリ名: <%= @category.name %></p>
+
+<%= link_to 'カテゴリ一覧に戻る', categories_path, class: 'btn btn-default btn-sm' %>
+<%= link_to 'このカテゴリを編集する', edit_category_path, class: 'btn btn-default btn-sm' %>
+<%= link_to 'このカテゴリを削除する', @category, method: :delete, data: { confirm: '本当に削除してよろしいですか？' }, class: 'btn btn-default btn-sm' %>
