@@ -1,0 +1,6 @@
+<h1><%= @item.name %> の物品情報詳細</h1>
+<p>Find me in app/views/items/show.html.erb</p>
+
+<%= link_to '在庫一覧に戻る', root_path, class: 'btn btn-default btn-sm' %>
+<%= link_to 'この物品情報を編集する', edit_item_path, class: 'btn btn-default btn-sm' %>
+<%= link_to 'この物品を削除する', @item, method: :delete, data: { confirm: '本当に削除してよろしいですか？' }, class: 'btn btn-default btn-sm' %>

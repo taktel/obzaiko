@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :new, :create]
   
   resources :categories
+  
+  resources :items, only: [:show, :new, :create, :edit, :update, :destroy]
 end
