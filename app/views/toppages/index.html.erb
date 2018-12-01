@@ -26,8 +26,14 @@
 	  				  ---
 	  				<% end %>
 	  		  </td>
-	  			<td>XXX <%= item.unit %></td>
-	  			<td>YYYY/MM/DD</td>
+	  			<td><%= number_with_precision(item.monthly_usage, precision: 1) %> <%= item.unit %></td>
+	  			<td>
+	  				<% if item.monthly_usage.to_f > 0 %>
+	  				  <%= lastcheck.date + lastcheck.number.to_f / item.monthly_usage %>
+	  				<% else %>
+	  				  ---
+	  				<% end %>
+	  			</td>
 	  		</tr>
 			<% end %>
 		</tbody>
