@@ -1,5 +1,50 @@
 <h1><%= @item.name %> の物品情報詳細</h1>
-<p>Find me in app/views/items/show.html.erb</p>
+
+<div>
+  <%= line_chart [
+    { name: "在庫数", data: @item.checks.order(:date).pluck(:date, :number) }]
+    %>
+</div>
+
+<div>
+  <table class="table table-hover table-condensed">
+    <thead>
+  		<tr>
+  			<th>日付</th>
+  			<th>入荷数量</th>
+  			<th>在庫数量</th>
+  			<th>担当者</th>
+  		</tr>
+  	</thead>
+	  <tbody>
+	    <% if Inventory.find_by(item_id: @item.id) %>
+    	  <% Inventory.where(item_id: @item.id).order(date: 'DESC').each do |inventory| %>
+          <tr>
+      			<td><%= inventory.date %></td>
+      			<td>
+      			  <% if inventory.type == 'Add' %>
+      			    <%= inventory.number %> <%= @item.unit %>
+      			  <% else %>
+      			    ---
+      			  <% end %>
+      			</td>
+      			<td>
+      			  <% if inventory.type == 'Check' %>
+      			    <%= inventory.number %> <%= @item.unit %>
+      			  <% else %>
+      			    ---
+      			  <% end %>
+      			</td>
+      			<td><%= inventory.user.name %></td>
+          </tr>
+    		<% end %>
+    	<% else %>
+  	    <tr><td>データが見つかりません</td></tr>
+  	  <% end %>
+  	</tbody>
+  </table>
+  
+</div>
 
 <%= link_to '在庫一覧に戻る', root_path, class: 'btn btn-default btn-sm' %>
 <%= link_to 'この物品情報を編集する', edit_item_path, class: 'btn btn-default btn-sm' %>

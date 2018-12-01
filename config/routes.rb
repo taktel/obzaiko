@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: 'toppages#index'
-
+  
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
@@ -10,5 +10,10 @@ Rails.application.routes.draw do
   
   resources :categories
   
-  resources :items, only: [:show, :new, :create, :edit, :update, :destroy]
+  resources :items, only: [:show, :new, :create, :edit, :update, :destory]
+  
+  resources :inventories, only: [:index, :create, :update, :destory]
+  get 'check', to: 'inventories#check'
+  get 'add', to: 'inventories#add'
+  
 end

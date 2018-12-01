@@ -1,31 +1,38 @@
 <% if logged_in? %>
-<table class="table table-hover table-condensed">
-	<thead>
-		<tr>
-			<th>物品名</th>
-			<th>品番</th>
-			<th>カテゴリ</th>
-			<th>保管場所</th>
-			<th>数量</th>
-			<th>月間使用量</th>
-			<th>在庫切れ予測日</th>
-		</tr>
-	</thead>
-	<tbody>
-	  <% @items.each do |item| %>
-  		<tr>
-  			<td><%= link_to item.name, item %></td>
-  			<td><%= item.code %></td>
-  			<th><%= item.category.name %></th>
-  			<td><%= item.storage_location %></td>
-  			<td>XXX <%= item.unit %></td>
-  			<td>XXX <%= item.unit %></td>
-  			<td>YYYY/MM/DD</td>
-  		</tr>
-		<% end %>
-	</tbody>
-</table>
-<%= link_to '新規物品の登録', new_item_path, class: 'btn btn-default' %>
+	<table class="table table-hover table-condensed">
+		<thead>
+			<tr>
+				<th>物品名</th>
+				<th>品番</th>
+				<th>カテゴリ</th>
+				<th>保管場所</th>
+				<th>数量(確認日)</th>
+				<th>月間使用量</th>
+				<th>在庫切れ予測日</th>
+			</tr>
+		</thead>
+		<tbody>
+		  <% @items.each do |item| %>
+	  		<tr>
+	  			<td><%= link_to item.name, item %></td>
+	  			<td><%= item.code %></td>
+	  			<th><%= item.category.name %></th>
+	  			<td><%= item.storage_location %></td>
+	  			<td>
+	  				<% lastcheck = item.checks.order(:date).last %>
+	  				<% if lastcheck %>
+	  				  <%= lastcheck.number %> <%= item.unit %> (<%= lastcheck.date %>)
+	  				<% else %>
+	  				  ---
+	  				<% end %>
+	  		  </td>
+	  			<td>XXX <%= item.unit %></td>
+	  			<td>YYYY/MM/DD</td>
+	  		</tr>
+			<% end %>
+		</tbody>
+	</table>
+  <%= link_to '新規物品の登録', new_item_path, class: 'btn btn-default' %>
 <% else %>
   <div class="center jumbotron">
     <div class="text-center">

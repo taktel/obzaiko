@@ -7,4 +7,8 @@ class Item < ApplicationRecord
   validates :storage_location, length: { maximum: 50 }
   validates :vendor, length: { maximum: 50 }
   validates :lead_time, presence: true
+  
+  has_many :inventories
+  has_many :adds
+  has_many :checks
 end

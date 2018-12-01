@@ -1,0 +1,16 @@
+<div class="row">
+  <h1>
+	  在庫数量の入力
+  </h1>
+  <div>
+    <%= form_tag(check_path, method: :get, class: 'form-inline') do %>
+      <div class="input-group col-sm-3">
+      	<span class="input-group-addon">カテゴリ</span>
+        <%= select_tag :category_id, options_from_collection_for_select(Category.all, :id, :name), :include_blank => true, class: 'form-control' %>
+      </div>
+      <%= submit_tag '絞込み', class: 'btn btn-default' %>
+    <% end %>
+  </div>
+  
+  <%= render 'inventory_table' %>
+</div>

@@ -1,0 +1,78 @@
+<div class="row">
+  <h1>
+	  <% if @type = 'Check' %>
+	    在庫数量の入力
+	  <% else %>
+	    入荷数量の入力
+	  <% end %>
+  </h1>
+  <div>
+    <%= form_tag(inventories_path, method: :get, class: 'form-inline') do %>
+      <div class="input-group col-sm-3">
+      	<span class="input-group-addon">カテゴリ</span>
+        <%= select_tag :category_id, options_from_collection_for_select(Category.all, :id, :name), :include_blank => true, class: 'form-control' %>
+      </div>
+      <%= submit_tag '絞込み', class: 'btn btn-default' %>
+    <% end %>
+  </div>
+  
+  <%= form_tag(inventories_path, method: :post, class: 'form-inline') do %>
+    <table class="table table-hover table-condensed">
+      <thead>
+    		<tr>
+    			<th>物品名</th>
+    			<th>品番</th>
+    			<th>カテゴリ</th>
+    			<th>保管場所</th>
+    			<th>前回在庫数量</th>
+    			<th>
+    			  <% if @type = 'Check' %>
+    			    在庫数量
+    			  <% else %>
+    			    入荷数量
+    			  <% end %>
+    			</th>
+    		</tr>
+    	</thead>
+  	  <tbody>
+    	  <% @items.each do |item| %>
+      		<tr>
+      			<td><%= link_to item.name, item %></td>
+      			<td><%= item.code %></td>
+      			<th><%= item.category.name %></th>
+      			<td><%= item.storage_location %></td>
+      			<td>
+      			  <% if @lastchecks[item.id] %>
+      			    <%= @lastchecks[item.id].number %> <%= item.unit %>
+      			    (<%= @lastchecks[item.id].date %>)
+      			  <% else %>
+      			    ---
+      			  <% end %>
+      			</td>
+      			<td>
+              <div class="input-group">
+                <%= number_field_tag 'numbers['+item.id.to_s+']', {}, class: 'form-control' %>
+              	<span class="input-group-addon"><%= item.unit %></span>
+              </div>
+      			</td>
+      		</tr>
+    		<% end %>
+    	</tbody>
+    </table>
+    
+    <div class="input-group col-sm-3">
+    	<span class="input-group-addon">日付</span>
+      <%= date_field_tag :date, Date.today, class: 'form-control' %>
+    </div>
+    <div class="input-group col-sm-3 text-center">
+      入力者: <%= current_user.name %>
+      <%= hidden_field_tag :user_id, current_user.id %>
+    </div>
+    <div class="input-group col-sm-3 text-center">
+      作業種別: 在庫数確認
+      <%= hidden_field_tag :type, @type %>
+    </div>
+
+    <%= submit_tag '登録', class: 'btn btn-default btn-lg' %>
+  <% end %>
+</div>

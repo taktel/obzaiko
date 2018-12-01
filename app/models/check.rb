@@ -1,0 +1,2 @@
+class Check < Inventory
+end
