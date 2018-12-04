@@ -3,9 +3,9 @@
     <thead>
   		<tr>
   			<th>物品名</th>
-  			<th>品番</th>
+  			<!-- <th>品番</th>
   			<th>カテゴリ</th>
-  			<th>保管場所</th>
+  			<th>保管場所</th> -->
   			<th>前回数量(確認日)</th>
   			<th>
   			  <% if @type == 'Check' %>
@@ -20,9 +20,9 @@
   	  <% @items.each do |item| %>
     		<tr>
     			<td><%= link_to item.name, item %></td>
-    			<td><%= item.code %></td>
+    			<!-- <td><%= item.code %></td>
     			<th><%= item.category.name %></th>
-    			<td><%= item.storage_location %></td>
+    			<td><%= item.storage_location %></td> -->
     			<td>
     			  <% if @lastchecks[item.id] %>
     			    <%= @lastchecks[item.id].number %> <%= item.unit %>

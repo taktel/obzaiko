@@ -27,10 +27,32 @@ class InventoriesController < ApplicationController
     end
   end
 
+  def edit
+    @inventory = Inventory.find(params[:id])
+  end
+
   def update
+    @inventory = Inventory.find(params[:id])
+    
+    if Inventory.where.not(id: params[:id]).find_by(type: params[:type], date: params[:date], item_id: params[:item_id])
+      flash.now[:danger] = Item.find(params[:item_id]).name+" : 同じ日付では登録できません"
+      render :edit
+    elsif @inventory.update(:type => params[:type], :date => params[:date], :number => params[:number], :user_id => params[:user_id], :item_id => params[:item_id])
+      flash[:success] = '情報を更新しました。'
+      redirect_to item_url(id: params[:item_id])
+    else
+      flash.now[:danger] = '情報を更新できませんでした'
+      render :edit
+    end
   end
 
   def destroy
+    @inventory = Inventory.find(params[:id])
+    @item_id = @inventory.item_id
+    @inventory.destroy
+
+    flash[:success] = '正常に削除されました'
+    redirect_to item_url(id: @item_id)
   end
 
   def check

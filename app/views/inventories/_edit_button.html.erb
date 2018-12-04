@@ -1,0 +1,4 @@
+<%= form_tag(edit_inventory_path(inventory.id), method: :get, class: 'display-inline') do %>
+  <%= hidden_field_tag :id, inventory.id %>
+  <%= submit_tag '編集', class: 'btn btn-default btn-xs' %>
+<% end %>

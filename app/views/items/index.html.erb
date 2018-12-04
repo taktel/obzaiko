@@ -1,0 +1,13 @@
+<h1>物品一覧</h1>
+
+<ul>
+  <% @items.each do |item| %>
+    <li>
+      <% if current_user.level == "Administrator" %>
+        <%= link_to 'この物品を削除する', @item, method: :delete, data: { confirm: '本当に削除してよろしいですか？' }, class: 'btn btn-default btn-xs' %>
+      <% end %>
+      <%= link_to item.name, item %>
+    </li>
+  <% end %>
+</ul>
+<%= link_to '新規物品の作成', new_item_path, class: 'btn btn-default btn-sm' %>

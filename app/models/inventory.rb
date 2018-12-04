@@ -23,6 +23,7 @@ class Inventory < ApplicationRecord
         integrated_add += inventory.number
       end
     end
+    # 最小二乗近似で傾きを計算
     b = c = d = e = 0.0
     number_plus.each do |x, y|
       b += x**2

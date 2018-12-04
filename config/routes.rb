@@ -6,13 +6,13 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
   
   get 'signup', to: 'user#new'
-  resources :users, only: [:show, :new, :create]
+  resources :users
   
   resources :categories
   
-  resources :items, only: [:show, :new, :create, :edit, :update, :destory]
+  resources :items
   
-  resources :inventories, only: [:index, :create, :update, :destory]
+  resources :inventories, only: [:index, :create, :edit, :update, :destroy]
   get 'check', to: 'inventories#check'
   get 'add', to: 'inventories#add'
   

@@ -1,0 +1,9 @@
+<div class="input-group col-sm-3">
+	<span class="input-group-addon">並べ替え</span>
+  <%= select_tag :order, options_for_select([["物品名","name"], ["品番","code"], ["カテゴリ","category_id"], ["保管場所","storage_location"], ["発注先","vendor"]]), :include_blank => true, class: 'form-control' %>
+</div>
+<div class="input-group col-sm-3">
+	<span class="input-group-addon">カテゴリで絞り込み</span>
+  <%= select_tag :category_id, options_from_collection_for_select(Category.all, :id, :name), :include_blank => true, class: 'form-control' %>
+</div>
+<%= submit_tag '実行', class: 'btn btn-default' %>
