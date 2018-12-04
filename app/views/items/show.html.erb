@@ -14,6 +14,7 @@
   			<th>入荷数量</th>
   			<th>在庫数量</th>
   			<th>担当者</th>
+  			<th></th>
   		</tr>
   	</thead>
 	  <tbody>
@@ -36,6 +37,7 @@
       			  <% end %>
       			</td>
       			<td><%= inventory.user.name %></td>
+      			<td><%= render '/inventories/edit_button', inventory: inventory %> <%= render '/inventories/delete_button', inventory: inventory %></td>
           </tr>
     		<% end %>
     	<% else %>
@@ -48,4 +50,6 @@
 
 <%= link_to '在庫一覧に戻る', root_path, class: 'btn btn-default btn-sm' %>
 <%= link_to 'この物品情報を編集する', edit_item_path, class: 'btn btn-default btn-sm' %>
-<%= link_to 'この物品を削除する', @item, method: :delete, data: { confirm: '本当に削除してよろしいですか？' }, class: 'btn btn-default btn-sm' %>
+<% if current_user.level == "Administrator" %>
+  <%= link_to 'この物品を削除する', @item, method: :delete, data: { confirm: '本当に削除してよろしいですか？' }, class: 'btn btn-default btn-sm' %>
+<% end %>

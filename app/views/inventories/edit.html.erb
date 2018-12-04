@@ -1,0 +1,28 @@
+<h1><%= Item.find(@inventory.item_id).name %> の<%= @inventory.type == "Check" ? "在庫数" : "入荷" %>情報編集</h1>
+
+<div>
+  <%= form_tag(inventory_path, method: :put, class: '') do %>
+    <div class="input-group col-sm-3">
+    	<span class="input-group-addon">日付</span>
+      <%= date_field_tag :date, @inventory.date, class: 'form-control' %>
+    </div>
+    <div class="input-group col-sm-3">
+    	<span class="input-group-addon">数量</span>
+      <%= number_field_tag :number, @inventory.number, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      入力者: <%= current_user.name %>
+      <%= hidden_field_tag :user_id, current_user.id %>
+    </div>
+    <div class="form-group">
+      処理種別: <%= @inventory.type == "Check" ? "在庫数確認処理" : "入荷処理" %>
+      <%= hidden_field_tag :type, @inventory.type %>
+    </div>
+    <%= hidden_field_tag :item_id, @inventory.item_id %>
+    <%= hidden_field_tag :id, @inventory.id %>
+
+    <%= submit_tag '更新', class: 'btn btn-default' %>
+  <% end %>
+</div>
+
+<%= link_to '物品情報詳細に戻る', item_path(@inventory.item_id), class: 'btn btn-default' %>

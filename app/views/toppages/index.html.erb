@@ -1,23 +1,32 @@
 <% if logged_in? %>
+  <h1>
+	  在庫情報一覧
+  </h1>
+  <div>
+    <%= form_tag(root_path, method: :get, class: 'form-inline') do %>
+    	<%= render '/layouts/sort_form' %>
+    <% end %>
+  </div>
+  
 	<table class="table table-hover table-condensed">
-		<thead>
-			<tr>
-				<th>物品名</th>
-				<th>品番</th>
-				<th>カテゴリ</th>
-				<th>保管場所</th>
-				<th>数量(確認日)</th>
-				<th>月間使用量</th>
-				<th>在庫切れ予測日</th>
-			</tr>
+	  <thead>
+	    <tr>
+		  <th>物品名</th>
+		  <!-- <th>品番</th> -->
+			<!-- <th>カテゴリ</th> -->
+			<!-- <th>保管場所</th> -->
+			<th>数量(確認日)</th>
+			<th>月間使用量</th>
+			<th>在庫切れ予測日</th>
+		</tr>
 		</thead>
 		<tbody>
 		  <% @items.each do |item| %>
 	  		<tr>
 	  			<td><%= link_to item.name, item %></td>
-	  			<td><%= item.code %></td>
-	  			<th><%= item.category.name %></th>
-	  			<td><%= item.storage_location %></td>
+	  			<!-- <td><%= item.code %></td> -->
+	  			<!-- <th><%= item.category.name %></th> -->
+	  			<!-- <td><%= item.storage_location %></td> -->
 	  			<td>
 	  				<% lastcheck = item.checks.order(:date).last %>
 	  				<% if lastcheck %>
@@ -26,12 +35,18 @@
 	  				  ---
 	  				<% end %>
 	  		  </td>
-	  			<td><%= number_with_precision(item.monthly_usage, precision: 1) %> <%= item.unit %></td>
 	  			<td>
-	  				<% if item.monthly_usage.to_f > 0 %>
-	  				  <%= lastcheck.date + lastcheck.number.to_f / item.monthly_usage %>
+	  				<% if item.monthly_usage %>
+	  					<%= item.monthly_usage.round(1) %> <%= item.unit %>
 	  				<% else %>
-	  				  ---
+	  					---
+	  				<% end %>
+	  			</td>
+	  			<td>
+	  				<% if item.monthly_usage %>
+	  					<%= lastcheck.date + lastcheck.number / item.monthly_usage * 365.0 / 12.0 %>
+	  				<% else %>
+	  					---
 	  				<% end %>
 	  			</td>
 	  		</tr>
@@ -43,7 +58,7 @@
   <div class="center jumbotron">
     <div class="text-center">
       <h1>Welcome to OB在庫管理</h1>
-      <%= link_to '新規ユーザ登録', signup_path, class: 'btn btn-lg btn-primary' %>
+      <%= link_to 'ログイン', login_path, class: 'btn btn-lg btn-primary' %>
     </div>
   </div>
 <% end %>
