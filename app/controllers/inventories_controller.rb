@@ -58,6 +58,11 @@ class InventoriesController < ApplicationController
   def check
     @type = 'Check'
     @items = Item.all
+    if params[:order] == ""
+      @items = @items.order(:id)
+    else
+      @items = @items.order(params[:order])
+    end
     if params[:category_id].to_i > 0
       @items = @items.where(category_id: params[:category_id])
     end
@@ -70,6 +75,11 @@ class InventoriesController < ApplicationController
   def add
     @type = 'Add'
     @items = Item.all
+    if params[:order] == ""
+      @items = @items.order(:id)
+    else
+      @items = @items.order(params[:order])
+    end
     if params[:category_id].to_i > 0
       @items = @items.where(category_id: params[:category_id])
     end

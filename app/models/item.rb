@@ -14,13 +14,15 @@ class Item < ApplicationRecord
   has_many :checks, dependent: :destroy
   
   def stock_out_date
-    lastcheck = self.checks.order(:date).last
-    lastcheck.date + lastcheck.number / self.monthly_usage * 365.0 / 12.0
+    if lastcheck = self.checks.order(:date).last
+      lastcheck.date + lastcheck.number / self.monthly_usage * 365.0 / 12.0
+    else
+      nil
+    end
   end
   
   def stock_condition
-    if self.monthly_usage.to_f > 0
-      stock_out_date = self.stock_out_date
+    if self.monthly_usage.to_f > 0 and stock_out_date = self.stock_out_date
       if stock_out_date < Date.today + self.lead_time
         return "danger"
       elsif stock_out_date < Date.today + self.lead_time * 2
