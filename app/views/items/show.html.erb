@@ -1,6 +1,16 @@
 <h1><%= @item.name %> の物品情報詳細</h1>
 
 <div>
+    物品名: <%= @item.name %>, 
+    品番: <%= @item.code %>, 
+    カテゴリ: <%= @item.category.name %>, 
+    数量単位: <%= @item.unit %>, 
+    保管場所: <%= @item.storage_location %>, 
+    発注先: <%= @item.vendor %>, 
+    リードタイム: <%= @item.lead_time %>日
+</div>
+
+<div>
   <%= line_chart [
     { name: "在庫数", data: @item.checks.order(:date).pluck(:date, :number) }]
     %>

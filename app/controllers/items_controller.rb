@@ -49,6 +49,12 @@ class ItemsController < ApplicationController
     redirect_to root_url
   end
   
+  def import
+    count = Item.import(params[:file])
+    flash[:success] = '物品が' + count.to_s + '個インポートされました'
+    redirect_to items_url
+  end
+  
   private
   
   def item_params

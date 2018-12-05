@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   
   resources :categories
   
-  resources :items
+  resources :items do
+    collection { post :import }
+  end
   
   resources :inventories, only: [:index, :create, :edit, :update, :destroy]
   get 'check', to: 'inventories#check'

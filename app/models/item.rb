@@ -1,4 +1,5 @@
 class Item < ApplicationRecord
+  require 'csv'
   belongs_to :category
   
   validates :name, presence: true, length: { maximum: 50 }
@@ -8,34 +9,43 @@ class Item < ApplicationRecord
   validates :vendor, length: { maximum: 50 }
   validates :lead_time, presence: true
   
-  has_many :inventories
-  has_many :adds
-  has_many :checks
+  has_many :inventories, dependent: :destroy
+  has_many :adds, dependent: :destroy
+  has_many :checks, dependent: :destroy
+  
+  def stock_out_date
+    lastcheck = self.checks.order(:date).last
+    lastcheck.date + lastcheck.number / self.monthly_usage * 365.0 / 12.0
+  end
+  
+  def stock_condition
+    if self.monthly_usage.to_f > 0
+      stock_out_date = self.stock_out_date
+      if stock_out_date < Date.today + self.lead_time
+        return "danger"
+      elsif stock_out_date < Date.today + self.lead_time * 2
+        return "warning"
+      else
+        return "normal"
+      end
+    else
+		  return "N/A"
+		end
+  end
+  
+  def self.import(file) #CSVファイルのインポート
+    item_count = Item.count
+    CSV.foreach(file.path, headers: true) do |row|
+      item = Item.new
+      item.attributes = row.to_hash.slice(*item_attributes)
+      item.save
+    end
+    Item.count - item_count
+  end
   
   private
-  
-  def calc_monthly_usage
-    first_day = self.inventories.order(:date).first.date #データベースの最初の日
-    integrated_add = 0 #積算入荷数
-    number_plus = [] #[最初の日起算の日数, 在庫数に積算入荷数を加えた数]
-    first_day = self.inventories.order(:date).first.date
-    self.inventories.reverse_order(:date).each do |inventory|
-      if inventory.type = "Check"
-        number_plus.push( [ (inventory.date - first_day).to_f, inventory.number+integrated_add ] )
-      elsif inventory.type = "Add"
-        integrated_add += inventory.number
-      end
-    end
-    
-    b = c = d = e = 0.0
-    number_plus.each do |x, y|
-      b += x**2
-      c += y
-      d += x*y
-      e += x
-    end
-    n = number_plus.size
-    -365/12*(n*d-c*e)/(n*b-e**2)
+
+  def self.item_attributes
+    ["name","code","category_id", "unit", "storage_location", "vendor", "lead_time"]
   end
-      
 end
