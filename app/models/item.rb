@@ -13,9 +13,29 @@ class Item < ApplicationRecord
   has_many :adds, dependent: :destroy
   has_many :checks, dependent: :destroy
   
-  def stock_out_date
+  def dayly_usage
+    if self.monthly_usage
+      self.monthly_usage / 365.0 * 12.0
+    else
+      nil
+    end
+  end
+  
+  def today_stock
     if lastcheck = self.checks.order(:date).last
-      lastcheck.date + lastcheck.number / self.monthly_usage * 365.0 / 12.0
+      self.adds.where(date: lastcheck.date..Date.today).each do |add|
+        lastcheck.number += add.number
+      end
+      number = lastcheck.number.to_f - self.dayly_usage.to_f * (Date.today - lastcheck.date)
+      number > 0 ? number : 0.0
+    else
+      nil
+    end
+  end
+
+  def stock_out_date
+    if self.today_stock
+      Date.today + self.today_stock / self.dayly_usage
     else
       nil
     end

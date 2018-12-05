@@ -57,15 +57,7 @@ class InventoriesController < ApplicationController
 
   def check
     @type = 'Check'
-    @items = Item.all
-    if params[:order] == ""
-      @items = @items.order(:id)
-    else
-      @items = @items.order(params[:order])
-    end
-    if params[:category_id].to_i > 0
-      @items = @items.where(category_id: params[:category_id])
-    end
+    @items = items_sorted_by(params[:order], params[:category_id])
     @lastchecks = Hash.new
     @items.each do |item|
       @lastchecks[item.id] = item.checks.order(:date).last
@@ -74,15 +66,7 @@ class InventoriesController < ApplicationController
   
   def add
     @type = 'Add'
-    @items = Item.all
-    if params[:order] == ""
-      @items = @items.order(:id)
-    else
-      @items = @items.order(params[:order])
-    end
-    if params[:category_id].to_i > 0
-      @items = @items.where(category_id: params[:category_id])
-    end
+    @items = items_sorted_by(params[:order], params[:category_id])
     @lastchecks = Hash.new
     @items.each do |item|
       @lastchecks[item.id] = item.checks.order(:date).last

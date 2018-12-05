@@ -15,7 +15,8 @@
 		  <!-- <th>品番</th> -->
 			<!-- <th>カテゴリ</th> -->
 			<!-- <th>保管場所</th> -->
-			<th>数量(確認日)</th>
+			<th>確認数量(確認日)</th>
+			<!-- <th>推定数量(<%= Date.today %>)</th> -->
 			<th>月間使用量</th>
 			<th>在庫切れ予測日</th>
 		</tr>
@@ -42,12 +43,9 @@
 	  				  ---
 	  				<% end %>
 	  		  </td>
+	  			<!-- <td>	<%= item.today_stock ? item.today_stock.round(1) : "---" %> <%= item.unit %> </td> -->
 	  			<td>
-	  				<% if item.monthly_usage %>
-	  					<%= item.monthly_usage.round(1) %> <%= item.unit %>
-	  				<% else %>
-	  					---
-	  				<% end %>
+	  				<%= item.monthly_usage ? item.monthly_usage.round(1) : "---" %> <%= item.unit %>
 	  			</td>
 	  			<td class = <%= class_bg %> >
 	  				<% if item.monthly_usage.to_f > 0 %>
