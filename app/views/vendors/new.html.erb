@@ -1,0 +1,33 @@
+<h1>発注先の新規作成</h1>
+
+<div class="container">
+  <%= form_for @vendor, html: {class: 'form-horizontal'} do |f| %>
+    <div class="form-group">
+      <%= f.label :name, '発注先名', class: "col-sm-2 control-label"  %>
+      <div class="col-sm-10">
+        <%= f.text_field :name, class: 'form-control', placeholder: '発注先名' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :contact, '担当者名', class: "col-sm-2 control-label"  %>
+      <div class="col-sm-10">
+        <%= f.text_field :contact, class: 'form-control', placeholder: '担当者名' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :email, 'メールアドレス', class: "col-sm-2 control-label"  %>
+      <div class="col-sm-10">
+        <%= f.text_field :email, class: 'form-control', placeholder: 'メールアドレス' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10"  %>
+        <%= f.submit '作成', class: 'btn btn-default'  %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to '発注先一覧に戻る', vendors_path, class: 'btn btn-default pull-right' %>

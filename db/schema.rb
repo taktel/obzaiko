@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181204064543) do
+ActiveRecord::Schema.define(version: 20181206081358) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -37,12 +37,36 @@ ActiveRecord::Schema.define(version: 20181204064543) do
     t.integer  "category_id"
     t.string   "unit"
     t.string   "storage_location"
-    t.string   "vendor"
     t.float    "lead_time",        limit: 24
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.float    "monthly_usage",    limit: 24
+    t.integer  "vendor_id"
     t.index ["category_id"], name: "index_items_on_category_id", using: :btree
+    t.index ["vendor_id"], name: "index_items_on_vendor_id", using: :btree
+  end
+
+  create_table "order_sheets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.date     "order_date"
+    t.string   "code"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "vendor_id"
+    t.index ["user_id"], name: "index_order_sheets_on_user_id", using: :btree
+    t.index ["vendor_id"], name: "index_order_sheets_on_vendor_id", using: :btree
+  end
+
+  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.date     "arrival_date"
+    t.integer  "item_id"
+    t.integer  "number"
+    t.string   "status"
+    t.integer  "order_sheet_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["item_id"], name: "index_orders_on_item_id", using: :btree
+    t.index ["order_sheet_id"], name: "index_orders_on_order_sheet_id", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -53,7 +77,20 @@ ActiveRecord::Schema.define(version: 20181204064543) do
     t.string   "level"
   end
 
+  create_table "vendors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "contact"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "inventories", "items"
   add_foreign_key "inventories", "users"
   add_foreign_key "items", "categories"
+  add_foreign_key "items", "vendors"
+  add_foreign_key "order_sheets", "users"
+  add_foreign_key "order_sheets", "vendors"
+  add_foreign_key "orders", "items"
+  add_foreign_key "orders", "order_sheets"
 end

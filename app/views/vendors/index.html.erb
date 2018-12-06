@@ -1,0 +1,8 @@
+<h1>発注先一覧</h1>
+
+<ul>
+  <% @vendors.each do |vendor| %>
+    <li><%= link_to vendor.name, vendor %></li>
+  <% end %>
+</ul>
+<%= link_to '新規発注先の作成', new_vendor_path, class: 'btn btn-default btn-sm' %>

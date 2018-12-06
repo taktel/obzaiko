@@ -1,0 +1,8 @@
+<h1>id: <%= @vendor.id %> の発注先詳細</h1>
+
+<p>発注先名: <%= @vendor.name %></p>
+<p>担当者名: <%= @vendor.contact %></p>
+<p>emailアドレス: <%= @vendor.email %></p>
+
+<%= link_to '発注先一覧に戻る', vendors_path, class: 'btn btn-default btn-sm' %>
+<%= link_to 'この発注先を編集する', edit_vendor_path, class: 'btn btn-default btn-sm' %>

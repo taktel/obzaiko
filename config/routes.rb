@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :users
   
   resources :categories
+  resources :vendors, only: [:index, :show, :new, :create, :edit, :update]
   
   resources :items do
     collection { post :import }
@@ -17,5 +18,7 @@ Rails.application.routes.draw do
   resources :inventories, only: [:index, :create, :edit, :update, :destroy]
   get 'check', to: 'inventories#check'
   get 'add', to: 'inventories#add'
+  
+  resources :order_sheets, only: [:index, :new, :create]
   
 end

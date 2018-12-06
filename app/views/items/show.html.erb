@@ -6,7 +6,7 @@
     カテゴリ: <%= @item.category.name %>, 
     数量単位: <%= @item.unit %>, 
     保管場所: <%= @item.storage_location %>, 
-    発注先: <%= @item.vendor %>, 
+    発注先: <%= @item.vendor_id ? @item.vendor.name : "---" %>, 
     リードタイム: <%= @item.lead_time %>日
 </div>
 

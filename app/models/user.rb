@@ -6,4 +6,6 @@ class User < ApplicationRecord
   has_many :inventories
   has_many :adds
   has_many :checks
+  has_many :order_sheets
+  
 end

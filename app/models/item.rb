@@ -1,17 +1,18 @@
 class Item < ApplicationRecord
   require 'csv'
   belongs_to :category
+  belongs_to :vendor
   
   validates :name, presence: true, length: { maximum: 50 }
   validates :code, length: { maximum: 50 }
   validates :unit, presence: true, length: { maximum: 10 }
   validates :storage_location, length: { maximum: 50 }
-  validates :vendor, length: { maximum: 50 }
   validates :lead_time, presence: true
   
   has_many :inventories, dependent: :destroy
   has_many :adds, dependent: :destroy
   has_many :checks, dependent: :destroy
+  has_many :orders, dependent: :destroy
   
   def dayly_usage
     if self.monthly_usage
@@ -68,6 +69,6 @@ class Item < ApplicationRecord
   private
 
   def self.item_attributes
-    ["name","code","category_id", "unit", "storage_location", "vendor", "lead_time"]
+    ["name","code","category_id", "unit", "storage_location", "vendor_id", "lead_time"]
   end
 end
