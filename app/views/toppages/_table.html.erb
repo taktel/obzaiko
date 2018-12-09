@@ -1,0 +1,50 @@
+<table class="table table-hover table-condensed">
+  <thead>
+    <tr>
+	  <th>物品名</th>
+		<th>確認数量(確認日)</th>
+		<th>月間使用量</th>
+		<th>在庫月数</th>
+		<th>推奨発注日</th>
+	</tr>
+	</thead>
+	<tbody>
+	  <% @items.each do |item| %>
+			<% if item.stock_condition == "danger" %>
+			  <% class_bg = "bg-danger" %>
+			<% elsif item.stock_condition == "warning" %>
+			  <% class_bg = "bg-warning" %>
+			<% else %>
+				<% class_bg = "" %>
+			<% end %>
+			<% monthly_usage = item.monthly_usage %>
+			<% daily_usage = item.daily_usage %>
+			<% today_stock = item.today_stock %>
+			<% stock_out_date = item.stock_out_date %>
+			<% stock_months = item.stock_months %>
+			<% unit = " " + item.unit %>
+  		<tr>
+  			<td>
+  				<%= link_to item.name, item %>
+  			</td>
+  			<td>
+  				<% lastcheck = item.checks.order(:date).last %>
+  				<% if lastcheck %>
+  				  <%= lastcheck.number %> <%= unit %> (<%= lastcheck.date %>)
+  				<% else %>
+  				  ---
+  				<% end %>
+  		  </td>
+  			<td>
+  				<%= monthly_usage ? monthly_usage.round(1).to_s + unit  : "---" %>
+  			</td>
+  			<td class=<%= class_bg %> >
+  				<%= stock_months ? stock_months.round(1).to_s + " ヶ月" : "---" %>
+  			</td>
+  			<td class=<%= class_bg %> >
+  				<%= stock_out_date ? stock_out_date - item.lead_time * 1.5 : "---" %>
+  			</td>
+  		</tr>
+		<% end %>
+	</tbody>
+</table>

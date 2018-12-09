@@ -1,0 +1,36 @@
+<h1 class="text-center">ORDER SHEET</h1>
+<div>
+  <div>
+    TO: <%= @order_sheet.vendor.name %>
+  </div>
+  <div>
+    FROM: Osakabiso corporation
+  </div>
+  <div>
+    DATE: <%= @order_sheet.order_date %>
+  </div>
+  <div>
+    ORDER NO.: <%= @order_sheet.code %>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+  		<tr>
+  			<th>DESCRIPTION</th>
+  			<th>ITEM CODE</th>
+  			<th>QTY</th>
+      </tr>
+  	</thead>
+	  <tbody>
+      <% @order_sheet.orders.each do |order| %>
+	      <tr>
+          <td><%= order.item.name_en || order.item.name %></td>
+          <td><%= order.item.code %></td>
+          <td><%= order.number %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to '発注書一覧に戻る', order_sheets_path, class: 'btn btn-default pull-right' %>
+</div>

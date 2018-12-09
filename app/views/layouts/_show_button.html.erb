@@ -1,0 +1,4 @@
+<%= form_tag(record, method: :get, class: 'display-inline') do %>
+  <%= hidden_field_tag :id, record.id %>
+  <%= submit_tag '詳細', class: 'btn btn-default btn-xs' %>
+<% end %>

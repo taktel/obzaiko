@@ -3,8 +3,9 @@
 <ul>
   <% @items.each do |item| %>
     <li>
+      <%= link_to '編集', edit_item_path(item), class: 'btn btn-default btn-xs' %>
       <% if current_user.level == "Administrator" %>
-        <%= link_to 'この物品を削除する', item, method: :delete, data: { confirm: '本当に削除してよろしいですか？' }, class: 'btn btn-default btn-xs' %>
+        <%= link_to '削除', item, method: :delete, data: { confirm: '本当に削除してよろしいですか？' }, class: 'btn btn-default btn-xs' %>
       <% end %>
       <%= link_to item.name, item %>
     </li>

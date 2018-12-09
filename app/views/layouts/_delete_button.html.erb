@@ -1,0 +1,4 @@
+<%= form_tag(record, method: :delete, class: 'display-inline') do %>
+  <%= hidden_field_tag :id, record.id %>
+  <%= submit_tag '削除', class: 'btn btn-default btn-xs', data: { confirm: '本当に削除してよろしいですか？' }  %>
+<% end %>

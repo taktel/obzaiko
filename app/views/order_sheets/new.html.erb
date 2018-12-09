@@ -1,34 +1,73 @@
 <h1>新規発注</h1>
-<div>
-  <%= form_tag(new_order_sheet_path, method: 'GET', class: 'form-inline') do %>
-    <div class="form-group">
-      <%= text_field_tag :vendor, @vendor, class: 'form-control', placeholder: '発注先' %>
-      <%= number_field_tag :rows, @rows, class: 'form-control', placeholder: '物品数' %>
-    </div>
-    <%= submit_tag '選択', class: 'btn btn-default btn-sm' %>
-  <% end %>
-  
-  <%= form_tag(order_sheets_path, method: 'POST') do %>
-    <table class="table table-hover table-condensed">
-      <thead>
-    		<tr>
-    			<th>物品名</th>
-    			<th>注文数</th>
-        </tr>
-    	</thead>
-  	  <tbody>
-        <% @orders.each do |order| %>
-      		<tr>
-            <div class="form-inline">
-              <td> <%= select_tag :item_id, options_from_collection_for_select(@items, :id, :name, {:selected => nil}), class: 'form-control' %> </td>
-              <td> <%= number_field_tag :number, '', class: 'form-control', placeholder: '数量' %> </td>
-            </div>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <%= submit_tag '新規発注登録', class: 'btn btn-default' %>
-  <% end %>
-</div>
 
-<%= link_to '在庫一覧に戻る', root_path, class: 'btn btn-default' %>
+<%= render 'note_new' %>
+
+<%= form_tag(new_order_sheet_path, method: 'GET', class: 'form-inline') do %>
+  <div class="input-group col-sm-3">
+    <span class="input-group-addon">発注先</span>
+    <%= select_tag :vendor_id, options_from_collection_for_select(Vendor.all, :id, :name, {:selected => @vendor_id}), :include_blank => true, class: 'form-control'%>
+  </div>
+  <div class="input-group col-sm-3">
+    <span class="input-group-addon">発注書行数</span>
+    <td><%= number_field_tag :row_size, @row_size, class: 'form-control' %></td>
+  </div>
+  <div class="form-group">
+    <%= submit_tag '選択', class: 'btn btn-default' %>
+  </div>
+<% end %>
+
+<%= form_tag(order_sheets_path, method: "POST", class: 'form-horizontal') do %>
+  <table class="table table-hover">
+    <thead>
+  		<tr>
+  			<th>物品名</th>
+  			<th>発注数(A)</th>
+  			<th>推定在庫数(B)</th>
+  			<th>合計数(C=A+B)</th>
+  			<th>月間使用量(X)</th>
+  			<th>在庫月数(C/X)</th>
+      </tr>
+  	</thead>
+	  <tbody>
+      <% @orders.each do |order| %>
+	      <tr>
+	        <% unit = " " + order.item.unit if order.item %>
+          <td><%= select_tag "rows[][item_id]", options_from_collection_for_select(@items, :id, :name, {:selected => order.item_id}), class: 'form-control' %></td>
+          <td><div class="input-group"><%= number_field_tag "rows[][number]", order.number, class: 'form-control' %><span class="input-group-addon"><%= unit %></span></div></td>
+          <td><%= (today_stock = order.item.today_stock).round(1).to_s + unit if order.item and order.item.today_stock %></td>
+          <td><%= (total_stock = today_stock + order.number).round(1).to_s + unit if today_stock and order.number %></td>
+          <td><%= (monthly_usage = order.item.monthly_usage).round(1).to_s + unit if order.item and order.item.monthly_usage %></td>
+          <td><%= (total_stock / monthly_usage).round(1).to_s + " ヶ月" if total_stock and monthly_usage %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div>
+    <%= submit_tag '在庫数評価', name: "inventory_button", class: 'btn btn-default' %>
+  </div>
+  <div class="form-inline">
+    <div class="input-group">
+      <span class="input-group-addon">発注日</span>
+      <%= date_field_tag :order_date, Date.today, class: 'form-control' %>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon">入荷予定日</span>
+      <%= date_field_tag :arrival_date, Date.today + 60, class: 'form-control' %>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon">発注書番号</span>
+      <%= text_field_tag :code, nil, class: 'form-control' %>
+    </div>
+    <div class="input-group">
+      <span>発注者: <%= current_user.name %></span>
+      <%= hidden_field_tag :user_id, current_user.id %>
+    </div>
+    <%= hidden_field_tag :order_sheet, @order_sheet %>
+    <%= hidden_field_tag :vendor_id, @vendor_id %>
+    <%= hidden_field_tag :row_size, @row_size %>
+    <%= submit_tag '新規発注', name: "order_button", class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<%= link_to '在庫一覧に戻る', root_path, class: 'btn btn-default pull-right' %>

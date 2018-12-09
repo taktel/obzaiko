@@ -1,5 +1,5 @@
 class Inventory < ApplicationRecord
-  after_save :calc_monthly_usage
+  after_save :calc_daily_usage
   
   belongs_to :user
   belongs_to :item
@@ -11,12 +11,12 @@ class Inventory < ApplicationRecord
   
   private
   
-  def calc_monthly_usage
-    item = Item.find(self.item_id)
-    first_day = item.inventories.order(:date).first.date #データベースの最初の日
+  def calc_daily_usage
+    inventories = self.item.inventories.where(date: (Date.today-365)..Date.today) #過去1年間をもとに計算
+    first_day = inventories.order(:date).first.date #データベースの最初の日
     integrated_add = 0.0 #積算入荷数
     number_plus = [] #[最初の日起算の日数, 在庫数に積算入荷数を加えた数]
-    item.inventories.order(date: "DESC").each do |inventory|
+    inventories.order(date: "DESC").each do |inventory|
       if inventory.type == "Check"
         number_plus.push( [ (inventory.date - first_day).to_f, (inventory.number + integrated_add).to_f ] )
       elsif inventory.type == "Add"
@@ -32,9 +32,9 @@ class Inventory < ApplicationRecord
       e += x
     end
     n = number_plus.size.to_f
-    item.monthly_usage = -365.0/12.0*(n*d-c*e)/(n*b-e**2)
-    if item.monthly_usage > 0
-      item.save
+    self.item.daily_usage = -1.0*(n*d-c*e)/(n*b-e**2)
+    if self.item.daily_usage > 0
+      self.item.save
     end
   end
 end

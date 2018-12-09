@@ -19,6 +19,6 @@ Rails.application.routes.draw do
   get 'check', to: 'inventories#check'
   get 'add', to: 'inventories#add'
   
-  resources :order_sheets, only: [:index, :new, :create]
-  
+  resources :order_sheets
+
 end

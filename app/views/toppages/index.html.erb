@@ -2,62 +2,17 @@
   <h1>
 	  在庫情報一覧
   </h1>
+  
+  <%= render 'note' %>
+
   <div>
     <%= form_tag(root_path, method: :get, class: 'form-inline') do %>
     	<%= render '/layouts/sort_form' %>
     <% end %>
   </div>
   
-	<table class="table table-hover table-condensed">
-	  <thead>
-	    <tr>
-		  <th>物品名</th>
-		  <!-- <th>品番</th> -->
-			<!-- <th>カテゴリ</th> -->
-			<!-- <th>保管場所</th> -->
-			<th>確認数量(確認日)</th>
-			<!-- <th>推定数量(<%= Date.today %>)</th> -->
-			<th>月間使用量</th>
-			<th>在庫切れ予測日</th>
-		</tr>
-		</thead>
-		<tbody>
-		  <% @items.each do |item| %>
-  			<% if item.stock_condition == "danger" %> <!-- 在庫数の状況に応じて、背景色を変更する -->
-  			  <% class_bg = "bg-danger" %>
-  			<% elsif item.stock_condition == "warning" %>
-  			  <% class_bg = "bg-warning" %>
-  			<% else %>
-  				<% class_bg = "" %>
-  			<% end %>
-	  		<tr>
-	  			<td><%= link_to item.name, item %></td>
-	  			<!-- <td><%= item.code %></td> -->
-	  			<!-- <th><%= item.category.name %></th> -->
-	  			<!-- <td><%= item.storage_location %></td> -->
-	  			<td>
-	  				<% lastcheck = item.checks.order(:date).last %>
-	  				<% if lastcheck %>
-	  				  <%= lastcheck.number %> <%= item.unit %> (<%= lastcheck.date %>)
-	  				<% else %>
-	  				  ---
-	  				<% end %>
-	  		  </td>
-	  			<!-- <td>	<%= item.today_stock ? item.today_stock.round(1) : "---" %> <%= item.unit %> </td> -->
-	  			<td>
-	  				<%= item.monthly_usage ? item.monthly_usage.round(1) : "---" %> <%= item.unit %>
-	  			</td>
-	  			<td class = <%= class_bg %> >
-	  				<% if item.monthly_usage.to_f > 0 %>
-	  					<%= item.stock_out_date %>
-	  				<% else %>
-	  					---
-	  				<% end %>
-	  			</td>
-	  		</tr>
-			<% end %>
-		</tbody>
-	</table>
+  <%= render 'table' %>
+  
   <%= link_to '新規物品の登録', new_item_path, class: 'btn btn-default' %>
 <% else %>
   <div class="center jumbotron">

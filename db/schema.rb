@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181206081358) do
+ActiveRecord::Schema.define(version: 20181208063834) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -40,8 +40,9 @@ ActiveRecord::Schema.define(version: 20181206081358) do
     t.float    "lead_time",        limit: 24
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
-    t.float    "monthly_usage",    limit: 24
     t.integer  "vendor_id"
+    t.float    "daily_usage",      limit: 24
+    t.string   "name_en"
     t.index ["category_id"], name: "index_items_on_category_id", using: :btree
     t.index ["vendor_id"], name: "index_items_on_vendor_id", using: :btree
   end

@@ -1,2 +1,40 @@
-<h1>OrderSheets#index</h1>
-<p>Find me in app/views/order_sheets/index.html.erb</p>
+<h1>発注書一覧</h1>
+
+<table class="table table-hover">
+  <thead>
+		<tr>
+			<th>発注日</th>
+			<th>発注書番号</th>
+			<th>発注先</th>
+			<th>発注者</th>
+			<th>入荷状況</th>
+			<th></th>
+    </tr>
+	</thead>
+  <tbody>
+    <% @order_sheets.order("order_date DESC").each do |order_sheet|%>
+      <tr>
+        <td><%= order_sheet.order_date %></td>
+        <td><%= order_sheet.code %></td>
+        <td><%= order_sheet.vendor.name if order_sheet.vendor %></td>
+        <td><%= order_sheet.user.name %></td>
+        <td>
+          <% if order_sheet.status_done? %>
+            <button type="button" class="btn btn-default">入荷済</button>
+          <% else %>
+              <%= form_tag(edit_order_sheet_path(order_sheet), method: :get, class: 'display-inline') do %>
+              <%= submit_tag '入荷処理', class: 'btn btn-primary' %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= render '/layouts/show_button', record: order_sheet %>
+          <%= render '/layouts/edit_button', record: order_sheet %>
+          <%= render '/layouts/delete_button', record: order_sheet %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '発注書の新規作成', new_order_sheet_path, class: 'btn btn-default pull-right' %>

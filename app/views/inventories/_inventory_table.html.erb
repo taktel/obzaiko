@@ -33,7 +33,7 @@
     			</td>
     			<td>
             <div class="input-group">
-              <%= number_field_tag 'numbers['+item.id.to_s+']', {}, class: 'form-control' %>
+              <%= number_field_tag "numbers[#{item.id}]", {}, class: 'form-control' %>
             	<span class="input-group-addon"><%= item.unit %></span>
             </div>
     			</td>

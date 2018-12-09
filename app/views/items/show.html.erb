@@ -21,24 +21,30 @@
     <thead>
   		<tr>
   			<th>日付</th>
-  			<th>入荷数量</th>
   			<th>在庫数量</th>
+  			<th>入荷数量</th>
+  			<th>発注数量</th>
   			<th>担当者</th>
   			<th></th>
   		</tr>
   	</thead>
 	  <tbody>
+	    <% if @orders = @item.not_done_orders %>
+    	  <% @orders.order(arrival_date: 'DESC').each do |order| %>
+          <tr>
+      			<td><%= order.arrival_date %>入荷予定</td>
+      			<td>---</td>
+      			<td>---</td>
+      			<td><%= order.number %> <%= @item.unit %></td>
+      			<td><%= order.order_sheet.user.name %></td>
+      			<td><%= render '/layouts/edit_button', record: order.order_sheet %></td>
+          </tr>
+    		<% end %>
+  	  <% end %>
 	    <% if Inventory.find_by(item_id: @item.id) %>
     	  <% Inventory.where(item_id: @item.id).order(date: 'DESC').each do |inventory| %>
           <tr>
       			<td><%= inventory.date %></td>
-      			<td>
-      			  <% if inventory.type == 'Add' %>
-      			    <%= inventory.number %> <%= @item.unit %>
-      			  <% else %>
-      			    ---
-      			  <% end %>
-      			</td>
       			<td>
       			  <% if inventory.type == 'Check' %>
       			    <%= inventory.number %> <%= @item.unit %>
@@ -46,12 +52,23 @@
       			    ---
       			  <% end %>
       			</td>
+      			<td>
+      			  <% if inventory.type == 'Add' %>
+      			    <%= inventory.number %> <%= @item.unit %>
+      			  <% else %>
+      			    ---
+      			  <% end %>
+      			</td>
+      			<td>---</td>
       			<td><%= inventory.user.name %></td>
-      			<td><%= render '/inventories/edit_button', inventory: inventory %> <%= render '/inventories/delete_button', inventory: inventory %></td>
+      			<td>
+      			  <%= render '/layouts/edit_button', record: inventory.becomes(Inventory) %>
+      			  <%= render '/layouts/delete_button', record: inventory.becomes(Inventory) %>
+      			 </td>
           </tr>
     		<% end %>
     	<% else %>
-  	    <tr><td>データが見つかりません</td></tr>
+  	    <tr><td colspan="6">在庫データ、入荷データが見つかりません。</td></tr>
   	  <% end %>
   	</tbody>
   </table>

@@ -1,0 +1,58 @@
+<div>*は必須項目</div>
+<div class="container">
+  <%= form_for @item, html: {class: 'form-horizontal'} do |f| %>
+    <div class="form-group">
+      <%= f.label :name, '物品名*', class: "col-sm-2 control-label" %>
+      <dev class="col-sm-8">
+        <%= f.text_field :name, class: "form-control", placeholder: "物品名" %>
+      </dev>
+    </div>
+    <div class="form-group">
+      <%= f.label :name_en, '物品英語名', class: "col-sm-2 control-label" %>
+      <dev class="col-sm-8">
+        <%= f.text_field :name_en, class: "form-control", placeholder: "物品英語名" %>
+      </dev>
+    </div>
+    <div class="form-group">
+      <%= f.label :code, '品番', class: "col-sm-2 control-label"  %>
+      <dev class="col-sm-4">
+        <%= f.text_field :code, class: 'form-control', placeholder: "品番"  %>
+      </dev>
+    </div>
+    <div class="form-group">
+      <%= f.label :category_id, 'カテゴリ', class: "col-sm-2 control-label"  %>
+      <dev class="col-sm-4">
+        <%= f.collection_select :category_id, Category.all, :id, :name, {}, class: 'form-control' %>
+      </dev>
+    </div>
+    <div class="form-group">
+      <%= f.label :unit, '数量単位*', class: "col-sm-2 control-label"  %>
+      <dev class="col-sm-4">
+        <%= f.text_field :unit, class: 'form-control', placeholder: "数量単位" %>
+      </dev>
+    </div>
+    <div class="form-group">
+      <%= f.label :storage_location, '保管場所', class: "col-sm-2 control-label"  %>
+      <dev class="col-sm-4">
+        <%= f.text_field :storage_location, class: 'form-control', placeholder: "保管場所" %>
+      </dev>
+    </div>
+    <div class="form-group">
+      <%= f.label :vendor, '発注先*', class: "col-sm-2 control-label"  %>
+      <dev class="col-sm-4">
+        <%= f.collection_select :vendor_id, Vendor.all, :id, :name, {}, class: 'form-control' %>
+      </dev>
+    </div>
+    <div class="form-group">
+      <%= f.label :lead_time, 'リードタイム(日)*', class: "col-sm-2 control-label"  %>
+      <dev class="col-sm-4">
+        <%= f.number_field :lead_time, class: 'form-control', placeholder: "リードタイム" %>
+      </dev>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10"  %>
+        <%= f.submit '登録', class: 'btn btn-primary' %>
+      </div>
+    </div>  
+  <% end %>
+</div>

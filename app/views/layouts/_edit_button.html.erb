@@ -1,0 +1,4 @@
+<%= form_tag(edit_polymorphic_path(record), method: :get, class: 'display-inline') do %>
+  <%= hidden_field_tag :id, record.id %>
+  <%= submit_tag '編集', class: 'btn btn-default btn-xs' %>
+<% end %>

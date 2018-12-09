@@ -1,0 +1,60 @@
+<h1>発注書編集</h1>
+
+<%= form_for @order_sheet, html: {class: 'form-horizontal'} do |f| %>
+
+  <div class="form-group">
+    <%= f.label :order_date, '発注日', class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= f.date_field :order_date, class: 'form-control', placeholder: '発注日' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :code, '発注書番号', class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= f.text_field :code, class: 'form-control', placeholder: '発注書番号' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :vendor_id, '発注先', class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= f.collection_select :vendor_id, [@order_sheet.vendor], :id, :name, {}, {class: 'form-control', readonly: true} %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :user_id, '発注者', class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= f.collection_select :user_id, User.all, :id, :name, {}, class: 'form-control' %>
+    </div>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+  		<tr>
+  			<th>物品名</th>
+  			<th>発注数</th>
+  			<th>入荷予定日</th>
+  			<th>進行状況</th>
+  			<th></th>
+      </tr>
+  	</thead>
+	  <tbody>
+      <% @order_sheet.orders.each do |order| %>
+        <%= f.fields_for :orders, order do |o|%> 
+  	      <tr>
+            <td><%= o.collection_select :item_id, Item.where(vendor_id: @order_sheet.vendor_id), :id, :name, {}, class: 'form-control' %></td>
+            <td><div class="input-group"><%= o.number_field :number, class: 'form-control' %><span class="input-group-addon"><%= order.item.unit if order.item %></span></div></td>
+            <td><%= o.date_field :arrival_date, class: 'form-control' %></td>
+            <td><%= o.select :status, Order.status_attributes, {}, class: 'form-control', data: { confirm: '編集画面で進行状況を変更した場合、入荷情報に反映されません。本当によろしいですか？' } %></td>
+            <td><%= o.check_box :_destroy %><%= o.label :_destroy, "削除" %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <div>*編集画面で入荷の進行状況を変更した場合、入荷情報に反映されません。通常は入荷処理から進行状況を変更してください。</div>
+  <%= f.submit '物品行を追加', class: 'btn btn-default' %>
+  <%= f.submit '更新', class: 'btn btn-primary' %>
+<% end %>
+
+<%= link_to '発注書一覧に戻る', order_sheets_path, class: 'btn btn-default pull-right' %>
+<%= link_to 'この発注の入荷処理をする', arrival_path(@order_sheet), class: 'btn btn-default pull-right' %>

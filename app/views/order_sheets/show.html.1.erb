@@ -1,0 +1,38 @@
+<h1>発注書詳細</h1>
+
+  <div>
+    発注日: <%= @order_sheet.order_date %>
+  </div>
+  <div>
+    発注書番号: <%= @order_sheet.code %>
+  </div>
+  <div>
+    発注先: <%= @order_sheet.vendor.name %>
+  </div>
+  <div>
+    発注者: <%= @order_sheet.user.name %>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+  		<tr>
+  			<th>物品名</th>
+  			<th>発注数</th>
+  			<th>入荷予定日</th>
+  			<th>進行状況</th>
+      </tr>
+  	</thead>
+	  <tbody>
+      <% @order_sheet.orders.each do |order| %>
+	      <tr>
+          <td><%= order.item.name %></td>
+          <td><%= order.number.to_s + " " + order.item.unit %></td>
+          <td><%= order.arrival_date %></td>
+          <td><%= order.show_status %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to '発注書一覧に戻る', order_sheets_path, class: 'btn btn-default pull-right' %>
+</div>
