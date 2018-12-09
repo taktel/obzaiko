@@ -2,6 +2,9 @@
   <h1>
 	  在庫数量の入力
   </h1>
+  
+  <%= render 'note_check' %>
+  
   <div>
     <%= form_tag(check_path, method: :get, class: 'form-inline') do %>
     	<%= render '/layouts/sort_form' %>

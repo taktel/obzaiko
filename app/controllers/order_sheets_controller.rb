@@ -81,6 +81,21 @@ class OrderSheetsController < ApplicationController
     @order_sheet = OrderSheet.find(params[:id])
   end
 
+  def add
+    @order_sheet = OrderSheet.find(params[:id])
+    order_sheet_params[:orders_attributes].each_value do |order_params|
+      if order_params[:status] == "done"
+        order = @order_sheet.orders.find(order_params[:id])
+        unless order.status == "done" #orderが"done"以外から"done"に変更されたとき、つまり今回入荷したとき
+          order.status = "done"
+          order.save
+          
+          #入荷処理、orderのステータスをdoneにして、新たにaddを作る
+        end
+      end
+    end
+  end
+
   private
   
   def initialze_variables

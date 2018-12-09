@@ -15,7 +15,7 @@ class InventoriesController < ApplicationController
       end
     end
     if @errormsg ==""
-      flash[:success] = '情報を登録しました。'
+      flash[:success] = '情報が登録されました。'
     else
       flash[:danger] = @errormsg
     end
@@ -38,7 +38,7 @@ class InventoriesController < ApplicationController
       flash.now[:danger] = Item.find(params[:item_id]).name+" : 同じ日付では登録できません"
       render :edit
     elsif @inventory.update(:type => params[:type], :date => params[:date], :number => params[:number], :user_id => params[:user_id], :item_id => params[:item_id])
-      flash[:success] = '情報を更新しました。'
+      flash[:success] = '情報が更新されました。'
       redirect_to item_url(id: params[:item_id])
     else
       flash.now[:danger] = '情報を更新できませんでした'

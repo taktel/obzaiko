@@ -2,7 +2,7 @@
 
 <%= render 'note_arrival' %>
 
-<%= form_for(@order_sheet, url: arrival_path(@order_sheet), html: {method: "post", class: 'form-horizontal'}) do |f| %>
+<%= form_for(@order_sheet, url: arrival_order_sheet_path(@order_sheet), html: {method: "post", class: 'form-horizontal'}) do |f| %>
 
   <div class="form-group">
     <%= f.label :order_date, '発注日', class: "col-sm-2 control-label" %>
@@ -33,27 +33,32 @@
     <thead>
   		<tr>
   			<th>物品名</th>
-  			<th>発注数</th>
+  			<th>入荷数</th>
   			<th>入荷日</th>
   			<th>進行状況</th>
       </tr>
   	</thead>
 	  <tbody>
       <% @order_sheet.orders.each do |order| %>
-        <%= fields_for :orders, order do |o|%> 
+        <%= f.fields_for :orders, order do |o|%> 
   	      <tr>
-            <td><%= o.collection_select :item_id, Item.where(vendor_id: @order_sheet.vendor_id), :id, :name, {}, class: 'form-control' %></td>
-            <td><div class="input-group"><%= o.number_field :number, class: 'form-control' %><span class="input-group-addon"><%= order.item.unit if order.item %></span></div></td>
-            <td><%= o.date_field :arrival_date, class: 'form-control' %></td>
-            <td><%= o.select :status, Order.status_attributes, {},class: 'form-control' %></td>
-            <td><%= o.check_box :_destroy %><%= o.label :_destroy, "削除" %></td>
+            <td><%= o.collection_select :item_id, [order.item], :id, :name, {}, class: 'form-control', readonly: true %></td>
+            <% if order.status == "done" %>
+              <td><div class="input-group"><%= o.number_field :number, class: 'form-control', readonly: true %><span class="input-group-addon"><%= order.item.unit if order.item %></span></div></td>
+              <td><%= o.date_field :arrival_date, value: Date.today, class: 'form-control', readonly: true %></td>
+              <td><%= o.select :status, [order.show_status], {},class: 'form-control', readonly: true %></td>
+            <% else %>
+              <td><div class="input-group"><%= o.number_field :number, class: 'form-control' %><span class="input-group-addon"><%= order.item.unit if order.item %></span></div></td>
+              <td><%= o.date_field :arrival_date, value: Date.today, class: 'form-control' %></td>
+              <td><%= o.select :status, Order.status_attributes, {},class: 'form-control' %></td>
+            <% end %>
           </tr>
         <% end %>
       <% end %>
     </tbody>
   </table>
-  <%= f.submit '物品行を追加', class: 'btn btn-default' %>
-  <%= f.submit '更新', class: 'btn btn-primary' %>
+  <%= f.submit '入荷処理実行', class: 'btn btn-primary' %>
 <% end %>
 
 <%= link_to '発注書一覧に戻る', order_sheets_path, class: 'btn btn-default pull-right' %>
+<%= link_to 'この発注書を編集する', edit_order_sheet_path(@order_sheet), class: 'btn btn-default pull-right' %>

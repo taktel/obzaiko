@@ -22,7 +22,7 @@ class ItemsController < ApplicationController
     else
       @items = Item.all
       flash.now[:danger] = '物品の登録に失敗しました。'
-      render 'toppages/index'
+      render :new
     end
   end
 

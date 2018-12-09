@@ -1,6 +1,7 @@
 <div>*は必須項目</div>
 <div class="container">
   <%= form_for @item, html: {class: 'form-horizontal'} do |f| %>
+    <%= render 'layouts/error_messages', model: f.object %>
     <div class="form-group">
       <%= f.label :name, '物品名*', class: "col-sm-2 control-label" %>
       <dev class="col-sm-8">

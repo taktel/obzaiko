@@ -68,7 +68,7 @@ class Item < ApplicationRecord
       end
     else
 		  return "N/A"
-		end
+    end
   end
 
   def not_done_orders

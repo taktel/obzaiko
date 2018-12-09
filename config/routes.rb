@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   get 'check', to: 'inventories#check'
   get 'add', to: 'inventories#add'
   
-  resources :order_sheets
-
+  resources :order_sheets do
+    member do
+      get 'arrival'
+      post 'arrival', to: 'order_sheets#add'
+    end
+  end
 end

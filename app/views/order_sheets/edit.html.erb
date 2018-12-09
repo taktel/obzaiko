@@ -1,7 +1,9 @@
 <h1>発注書編集</h1>
 
 <%= form_for @order_sheet, html: {class: 'form-horizontal'} do |f| %>
-
+  
+  <%= render 'layouts/error_messages', model: f.object %>
+  
   <div class="form-group">
     <%= f.label :order_date, '発注日', class: "col-sm-2 control-label" %>
     <div class="col-sm-4">
@@ -57,4 +59,4 @@
 <% end %>
 
 <%= link_to '発注書一覧に戻る', order_sheets_path, class: 'btn btn-default pull-right' %>
-<%= link_to 'この発注の入荷処理をする', arrival_path(@order_sheet), class: 'btn btn-default pull-right' %>
+<%= link_to 'この発注の入荷処理をする', arrival_order_sheet_path(@order_sheet), class: 'btn btn-default pull-right' %>

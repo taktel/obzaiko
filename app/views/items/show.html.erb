@@ -32,7 +32,7 @@
 	    <% if @orders = @item.not_done_orders %>
     	  <% @orders.order(arrival_date: 'DESC').each do |order| %>
           <tr>
-      			<td><%= order.arrival_date %>入荷予定</td>
+      			<td><%= order.arrival_date %><span class="label label-info">入荷予定</span></td>
       			<td>---</td>
       			<td>---</td>
       			<td><%= order.number %> <%= @item.unit %></td>
