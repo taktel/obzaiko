@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   resources :inventories, only: [:index, :create, :edit, :update, :destroy]
   get 'check', to: 'inventories#check'
   get 'add', to: 'inventories#add'
+  get 'checks', to: 'inventories#show_checks'
+  get 'adds', to: 'inventories#show_adds'
   
   resources :order_sheets do
     member do

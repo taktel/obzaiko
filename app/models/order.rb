@@ -2,6 +2,8 @@ class Order < ApplicationRecord
   belongs_to :item
   belongs_to :order_sheet
   
+  has_one :add
+  
   validates :number, presence: true, numericality: { greater_than: 0 }
   validates :item_id, presence: true
   

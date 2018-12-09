@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181208063834) do
+ActiveRecord::Schema.define(version: 20181209134353) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -26,7 +26,9 @@ ActiveRecord::Schema.define(version: 20181208063834) do
     t.integer  "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "order_id"
     t.index ["item_id"], name: "index_inventories_on_item_id", using: :btree
+    t.index ["order_id"], name: "index_inventories_on_order_id", using: :btree
     t.index ["type", "date", "item_id"], name: "index_inventories_on_type_and_date_and_item_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_inventories_on_user_id", using: :btree
   end
@@ -87,6 +89,7 @@ ActiveRecord::Schema.define(version: 20181208063834) do
   end
 
   add_foreign_key "inventories", "items"
+  add_foreign_key "inventories", "orders"
   add_foreign_key "inventories", "users"
   add_foreign_key "items", "categories"
   add_foreign_key "items", "vendors"

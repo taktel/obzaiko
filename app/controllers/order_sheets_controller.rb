@@ -52,7 +52,7 @@ class OrderSheetsController < ApplicationController
     if params[:commit] == "更新"
       if @order_sheet.update(order_sheet_params)
         flash[:success] = '発注書が更新されました。'
-        redirect_to edit_order_sheet_path(@order_sheet)
+        redirect_to edit_order_sheet_url(@order_sheet)
       else
         flash.now[:danger] = '更新に失敗しました。'
         render :edit
@@ -61,7 +61,7 @@ class OrderSheetsController < ApplicationController
       @order = @order_sheet.orders.build(item_id: Item.find_by(vendor_id: @order_sheet.vendor_id).id, number: 1)
       if @order.save
         flash[:success] = '物品が1行追加されました。'
-        redirect_to edit_order_sheet_path(@order_sheet)
+        redirect_to edit_order_sheet_url(@order_sheet)
       else
         flash.now[:danger] = '追加に失敗しました。'
         render :edit
@@ -77,22 +77,31 @@ class OrderSheetsController < ApplicationController
     redirect_to order_sheets_url
   end
 
-  def arrival
+  def arrival #発注書から入荷処理
     @order_sheet = OrderSheet.find(params[:id])
   end
 
-  def add
+  def add #発注書から入荷処理 入荷情報の登録
     @order_sheet = OrderSheet.find(params[:id])
+    add_count = Add.count
     order_sheet_params[:orders_attributes].each_value do |order_params|
       if order_params[:status] == "done"
         order = @order_sheet.orders.find(order_params[:id])
         unless order.status == "done" #orderが"done"以外から"done"に変更されたとき、つまり今回入荷したとき
           order.status = "done"
           order.save
-          
-          #入荷処理、orderのステータスをdoneにして、新たにaddを作る
+          add = order.build_add(item_id: order_params[:item_id], number: order_params[:number], date: order_params[:arrival_date], user_id: current_user.id)
+          add.save
         end
       end
+    end
+    count = Add.count - add_count
+    if count > 0
+      flash[:success] = "新規の入荷情報が#{count}件追加されました。"
+      redirect_to adds_url
+    else
+      flash.now[:danger] = '入荷情報は追加されませんでした。'
+      render :arrival
     end
   end
 

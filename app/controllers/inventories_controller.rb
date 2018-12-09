@@ -54,6 +54,14 @@ class InventoriesController < ApplicationController
     flash[:success] = '正常に削除されました'
     redirect_to item_url(id: @item_id)
   end
+  
+  def show_checks
+    @checks = Check.all.order("date DESC")
+  end
+
+  def show_adds
+    @adds = Add.all.order("date DESC")
+  end
 
   def check
     @type = 'Check'

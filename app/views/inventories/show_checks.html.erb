@@ -1,0 +1,32 @@
+<h1>在庫情報一覧</h1>
+
+<div>
+  <table class="table table-hover table-condensed">
+    <thead>
+  		<tr>
+  			<th>日付</th>
+  			<th>物品名</th>
+  			<th>在庫数量</th>
+  			<th>担当者</th>
+  			<th></th>
+  		</tr>
+  	</thead>
+	  <tbody>
+	    <% @checks.each do |check| %>
+        <tr>
+    			<td><%= check.date %></td>
+    			<td><%= check.item.name %></td>
+    			<td><%= check.number %></td>
+    			<td><%= check.user.name %></td>
+    			<td>
+    			  <%= render '/layouts/edit_button', record: check.becomes(Inventory) %>
+    			  <%= render '/layouts/delete_button', record: check.becomes(Inventory) %>
+    			</td>
+    		</tr>
+    	<% end %>
+  	</tbody>
+  </table>
+  
+</div>
+
+<%= link_to '在庫一覧に戻る', root_path, class: 'btn btn-default btn-sm' %>
