@@ -1,4 +1,6 @@
 class InventoriesController < ApplicationController
+  before_action :require_user_logged_in
+
   def index
   end
 
@@ -56,28 +58,20 @@ class InventoriesController < ApplicationController
   end
   
   def show_checks
-    @checks = Check.all.order("date DESC")
+    @checks = Check.all.order("date DESC").page(params[:page])
   end
 
   def show_adds
-    @adds = Add.all.order("date DESC")
+    @adds = Add.all.order("date DESC").page(params[:page])
   end
 
   def check
     @type = 'Check'
     @items = items_sorted_by(params[:order], params[:category_id])
-    @lastchecks = Hash.new
-    @items.each do |item|
-      @lastchecks[item.id] = item.checks.order(:date).last
-    end
   end
   
   def add
     @type = 'Add'
     @items = items_sorted_by(params[:order], params[:category_id])
-    @lastchecks = Hash.new
-    @items.each do |item|
-      @lastchecks[item.id] = item.checks.order(:date).last
-    end
   end
 end

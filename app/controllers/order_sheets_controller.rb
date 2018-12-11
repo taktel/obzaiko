@@ -1,4 +1,6 @@
 class OrderSheetsController < ApplicationController
+  before_action :require_user_logged_in
+    
   def index
     @order_sheets = OrderSheet.all
   end

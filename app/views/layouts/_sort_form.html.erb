@@ -1,9 +1,13 @@
 <div class="input-group col-sm-3">
 	<span class="input-group-addon">カテゴリで絞り込み</span>
-  <%= select_tag :category_id, options_from_collection_for_select(Category.all, :id, :name, {:selected => session[:sort_category_id]}), :include_blank => true, class: 'form-control' %>
+  <%= select_tag :category_id, options_for_select( [["全て",nil]] + Category.all.map{|c| [c.name, c.id]}, :selected => session[:sort_category_id] ), class: 'form-control' %>
 </div>
 <div class="input-group col-sm-3">
 	<span class="input-group-addon">並べ替え</span>
-  <%= select_tag :order, options_for_select([["物品名","name"]], :selected => session[:sort_order]), :include_blank => true, class: 'form-control' %>
+  <%= select_tag :order, options_for_select([["登録順","id"],["物品名","name"]], :selected => session[:sort_order]), class: 'form-control' %>
+</div>
+<div class="input-group col-sm-3">
+	<span class="input-group-addon">件数/ページ</span>
+  <%= select_tag :per_page, options_for_select([["10",10],["25",25],["50",50],["100",100]], :selected => session[:per_page] ), class: 'form-control' %>
 </div>
 <%= submit_tag '実行', class: 'btn btn-default' %>

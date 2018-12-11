@@ -1,4 +1,5 @@
 <%= form_tag(inventories_path, method: :post, class: 'form-inline') do %>
+  <div><%= paginate @items %></div>
   <table class="table table-hover table-condensed">
     <thead>
   		<tr>
@@ -24,9 +25,8 @@
     			<th><%= item.category.name %></th>
     			<td><%= item.storage_location %></td> -->
     			<td>
-    			  <% if @lastchecks[item.id] %>
-    			    <%= @lastchecks[item.id].number %> <%= item.unit %>
-    			    (<%= @lastchecks[item.id].date %>)
+    			  <% if lastcheck = item.checks.order(:date).last %>
+    			    <%= "#{lastcheck.number} #{item.unit} (#{lastcheck.date})" %>
     			  <% else %>
     			    ---
     			  <% end %>
@@ -41,7 +41,8 @@
   		<% end %>
   	</tbody>
   </table>
-  
+  <div><%= paginate @items %></div>
+
   <div class="input-group col-sm-3">
   	<span class="input-group-addon">日付</span>
     <%= date_field_tag :date, Date.today, class: 'form-control' %>

@@ -1,5 +1,6 @@
 <h1>物品一覧</h1>
 
+<%= paginate @items %>
 <ul>
   <% @items.each do |item| %>
     <li>
@@ -11,6 +12,8 @@
     </li>
   <% end %>
 </ul>
+<%= paginate @items %>
+
 <%= link_to '新規物品の作成', new_item_path, class: 'btn btn-default btn-sm' %>
 <%= form_tag({controller: "items", action: "import", method: "post"}, {multipart: true}) do %>
   <%= file_field_tag :file %>

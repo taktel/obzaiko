@@ -22,17 +22,19 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">入荷<span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">入荷処理<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><%= link_to '発注書から入荷処理', order_sheets_path %></li>
                 <li><%= link_to '物品一覧から入荷処理', add_path %></li>
+                <li><%= link_to '発注書から入荷処理', order_sheets_path %></li>
+                <li role="separator" class="divider"></li>
                 <li><%= link_to '入荷情報一覧', adds_path %></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">在庫数確認<span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">在庫確認<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><%= link_to '在庫数確認処理', check_path %></li>
+                <li><%= link_to '物品一覧から在庫確認', check_path %></li>
+                <li role="separator" class="divider"></li>
                 <li><%= link_to '在庫数情報一覧', checks_path %></li>
               </ul>
             </li>
@@ -40,8 +42,10 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">設定<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><%= link_to 'ユーザ管理', users_path %></li>
+                <li role="separator" class="divider"></li>
                 <li><%= link_to '物品管理', items_path %></li>
                 <li><%= link_to '物品カテゴリ管理', categories_path %></li>
+                <li role="separator" class="divider"></li>
                 <li><%= link_to '発注先管理', vendors_path %></li>
               </ul>
             </li>

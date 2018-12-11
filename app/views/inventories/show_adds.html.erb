@@ -1,6 +1,7 @@
 <h1>入荷情報一覧</h1>
 
 <div>
+  <%= paginate @adds %>
   <table class="table table-hover table-condensed">
     <thead>
   		<tr>
@@ -28,7 +29,7 @@
     	<% end %>
   	</tbody>
   </table>
-  
+  <%= paginate @adds %>
 </div>
 
 <%= link_to '在庫一覧に戻る', root_path, class: 'btn btn-default btn-sm' %>

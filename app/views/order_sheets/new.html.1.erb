@@ -23,10 +23,9 @@
   			<th>物品名</th>
   			<th>発注数(A)</th>
   			<th>推定在庫数(B)</th>
-  			<th>納品待ち数(C)</th>
-  			<th>合計数(D=A+B+C)</th>
+  			<th>合計数(C=A+B)</th>
   			<th>月間使用量(X)</th>
-  			<th>在庫月数(D/X)</th>
+  			<th>在庫月数(C/X)</th>
       </tr>
   	</thead>
 	  <tbody>
@@ -36,8 +35,7 @@
           <td><%= select_tag "rows[][item_id]", options_from_collection_for_select(@items, :id, :name, {:selected => order.item_id}), class: 'form-control' %></td>
           <td><div class="input-group"><%= number_field_tag "rows[][number]", order.number, class: 'form-control' %><span class="input-group-addon"><%= unit %></span></div></td>
           <td><%= (today_stock = order.item.today_stock).round(1).to_s + unit if order.item and order.item.today_stock %></td>
-          <td><%= (order_stock = order.item.not_done_orders.map{ |o| o[:number] }.sum).round(1).to_s + unit if today_stock and order.item.not_done_orders %></td>
-          <td><%= (total_stock = today_stock + order.number + order_stock).round(1).to_s + unit if today_stock and order.number %></td>
+          <td><%= (total_stock = today_stock + order.number).round(1).to_s + unit if today_stock and order.number %></td>
           <td><%= (monthly_usage = order.item.monthly_usage).round(1).to_s + unit if order.item and order.item.monthly_usage %></td>
           <td><%= (total_stock / monthly_usage).round(1).to_s + " ヶ月" if total_stock and monthly_usage %></td>
         </tr>
