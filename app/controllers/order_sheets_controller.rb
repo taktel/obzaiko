@@ -111,7 +111,7 @@ class OrderSheetsController < ApplicationController
   
   def initialze_variables
     @vendor_id = params[:vendor_id]
-    @items = @items = Item.where(vendor_id: @vendor_id)
+    @items = @items = Item.where(vendor_id: @vendor_id).order(:id)
     @row_size = (params[:row_size] || 5).to_i
     @order_sheet = current_user.order_sheets.build(order_date: Date.today)
   end
