@@ -13,7 +13,7 @@ class Inventory < ApplicationRecord
   private
   
   def calc_daily_usage
-    unless inventories = self.item.inventories.where(date: (Date.today-365)..Date.today) #過去1年間をもとに計算
+    if inventories = self.item.inventories.where(date: (Date.today-365)..Date.today) #過去1年間をもとに計算
       first_day = inventories.order(:date).first.date #データベースの最初の日
       integrated_add = 0.0 #積算入荷数
       number_plus = [] #[最初の日起算の日数, 在庫数に積算入荷数を加えた数]
